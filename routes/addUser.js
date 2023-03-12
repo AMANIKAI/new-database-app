@@ -1,17 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const User = require ('../models/user')
+const Users = require ('../models/user')
 
-router.get('/', (req,res)=>{
-    res.render('layouts/collect')
+router.get('/', async(req,res)=>{
+    const userList = await Users.find({}).exec();
+    res.render('layouts/userDetails', {userList})
+    
+    
     
 })
 
 //creating user on mongoDB
 router.post('/', (req,res)=>{
-    const createdUser = new User(req.body)
+    const createdUser = new Users(req.body)
     createdUser.save()
-    console.log(req.body)
+    res.redirect('/')
 })
 
 module.exports = router
